@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+.env
+.npm
+package-lock.json
+yarn-error.log
+dist/
+src/database/migration-metadata.json
+src/database/seeder-metadata.json

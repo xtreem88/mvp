@@ -1,0 +1,41 @@
+<div class="animated fadeIn table-container mat-elevation-z20">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h1>{{(product$ | async)?.attributes?.email}}</h1></mat-card-title>
+      <mat-card-subtitle>{{(product$ | async)?.last_updated_formatted}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="table-loading-shade" *ngIf="(loading$ | async)">
+        <mat-spinner *ngIf="(loading$ | async)"></mat-spinner>
+      </div>
+
+      <div class="row">
+        <mat-form-field fxFlex="25">
+          <input matInput type="text" placeholder="Amount to buy" [(ngModel)]="amount">
+        </mat-form-field>
+        <button mat-raised-button  style="margin-bottom: 15px;" color="primary" [disabled]="amount <= 0" (click)="buy()">
+          <mat-icon>edit</mat-icon> Buy Product
+        </button>
+      </div>
+
+      <mat-card class="mat-elevation-z0">
+        <mat-card-header>
+          <mat-card-title>Product Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngFor="let attribute of ((product$ | async) | keyvalue)"
+          fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="20px grid">
+            <div fxLayout="column" fxFlex="0 0 47%">
+              {{attribute.key}}
+            </div>
+
+            <div fxLayout="column" fxFlex="0 0 47%">
+              {{attribute.value}}
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

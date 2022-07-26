@@ -1,0 +1,12 @@
+<p>
+  <mat-toolbar color="primary" role="navigation">
+    <span>MVP</span>
+    <a mat-button [routerLink]="'/'"> Home </a>
+    <a mat-button [routerLink]="'/vending/deposit'"> Deposit </a>
+    <a mat-button [routerLink]="'/product'"> Products </a>
+    <span class="spacer"></span>
+    <a mat-button>Balance: {{balance | currency}} </a>
+    <a mat-button [routerLink]="'/'"> {{displayName}} </a>
+    <a mat-button (click)="logout()"> Log out </a>
+  </mat-toolbar>
+</p>

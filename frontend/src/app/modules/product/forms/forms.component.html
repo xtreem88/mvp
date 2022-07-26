@@ -1,0 +1,54 @@
+<div class="animated fadeIn table-container mat-elevation-z20">
+  <form [formGroup]="productForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{(product$ | async)?.attributes?.email}}</mat-card-title>
+      <mat-card-subtitle>{{(product$ | async)?.last_updated_formatted}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="table-loading-shade" *ngIf="(loading$ | async)">
+        <mat-spinner *ngIf="(loading$ | async)"></mat-spinner>
+      </div>
+
+      <mat-card class="mat-elevation-z0">
+        <mat-card-header>
+          <mat-card-title>Attributes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container formArrayName="attributes">
+
+          </ng-container>
+
+          <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+            <mat-form-field fxFlex="25">
+              <input matInput type="text" placeholder="Key">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="70">
+              <input matInput type="text" placeholder="Value">
+            </mat-form-field>
+
+            <div fxFlex="5">
+              <button mat-button>Add</button>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+            <div fxFlex="70"></div>
+            <div fxFlex="15">
+              <button mat-button color="primary" [routerLink]="['/product', id]">Discard Changes</button>
+            </div>
+            <div fxFlex="15">
+              <button mat-raised-button style="margin-bottom: 15px;" color="primary" (click)="submitForm()">
+                <mat-icon>save</mat-icon> Save Attribute
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </mat-card-content>
+  </mat-card>
+  </form>
+</div>
