@@ -1,6 +1,6 @@
-describe('My First Test', () => {
+describe('End to end test', () => {
   it('Visits the initial project page', () => {
     cy.visit('/')
-    cy.contains('Welcome')
+    cy.contains('MVP')
   })
 })
