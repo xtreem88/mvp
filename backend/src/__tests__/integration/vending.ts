@@ -10,7 +10,10 @@ import { createRandomUser } from '../../test-helpers/user-data';
 describe('status integration tests', () => {
   let app: express.Application;
   let token = '';
+  let token2 = '';
   let user: any;
+  let seller: any;
+  let prodId = '';
   beforeAll(async() => {
     app = await IntegrationHelpers.getApp();
 
@@ -19,16 +22,21 @@ describe('status integration tests', () => {
     .post('/auth/register')
     .set('Accept', 'application/json')
     .send(payload)
-    .expect((res: request.Response) => {
+    .then(res => {
       user = res.body.auth_user;
-      expect(res.body.auth_user.role === 'buyer')
-      expect(res.body.auth_user.username === 'Crawford.Maggio')
-      expect(res.body.auth_user.deposit === 0)
-    })
-    .expect(HTTP.OK);
+    });
+
+    const payload2 = createRandomUser('seller')
+    await request(app)
+    .post('/auth/register')
+    .set('Accept', 'application/json')
+    .send(payload2)
+    .then(res => {
+      seller = res.body.auth_user;
+    });
 
 
-    const data = {
+    let data = {
       "username": payload.username,
       "password": payload.password
     }
@@ -40,7 +48,42 @@ describe('status integration tests', () => {
       token = res.body.access_token.token;
     });
 
+    data = {
+      "username": payload2.username,
+      "password": payload2.password
+    }
+    await request(app)
+    .post('/auth/token')
+    .set('Accept', 'application/json')
+    .send(data)
+    .then((res: request.Response) => {
+      token2 = res.body.access_token.token;
+    });
+
+    await request(app)
+    .post('/api/v1/products')
+    .set('Accept', 'application/json')
+    .set('Authorization', token2)
+    .send({
+      "amountAvailable": 20,
+      "cost": 25,
+      "productName": "Product1_test",
+    })
+    .then((res: request.Response) => {
+      console.log(res.body)
+      prodId = res.body.data.id;
+    });
   });
+
+  beforeEach(async () => {
+    await request(app)
+      .get('/api/v1/users/' + user.id)
+      .set('Accept', 'application/json')
+      .set('Authorization', token)
+      .then((res: request.Response) => {
+        user = res.body;
+      });
+  })
 
   afterEach(async () => {
     await new Promise((r) => setTimeout(r, 1000));
@@ -50,48 +93,77 @@ describe('status integration tests', () => {
     await request(app)
     .delete('/api/v1/users/' + user.id)
     .set('Accept', 'application/json')
-    .auth(token, { type: "bearer" })
-    .expect((res: request.Response) => {
-      expect(res.body.message === 'User successfully deleted')
-    })
-    .expect(HTTP.OK);
+    .set('Authorization', token)
+
     await new Promise((r) => setTimeout(r, 1000));
   })
 
-  it('can get users', async () => {
-    await request(app)
-      .get('/api/v1/users')
-      .set('Accept', 'application/json')
-      .auth(token, { type: "bearer" })
-      .expect(HTTP.OK)
-      .expect((res: request.Response) => {
-        expect(res.body.count > 0);
-        expect(res.body.rows.length > 0);
-      });
-  });
+  describe('deposit', () => {
+    it('can deposit', async () => {
+      await request(app)
+        .post('/api/v1/vending/deposit')
+        .set('Accept', 'application/json')
+        .set('Authorization', token)
+        .send({
+          "coins": "5,20,10,20,50"
+        })
+        .expect((res: request.Response) => {
+          expect(res.body.auth_user.deposit === (user.deposit + 105))
+        })
+        .expect(HTTP.OK);
+    });
 
-  it('can get user by id', async () => {
-    await request(app)
-      .get('/api/v1/users/' + user.id)
+    it('should return error when wrong coin is used', async () => {
+      await request(app)
+        .post('/api/v1/vending/deposit')
+        .set('Accept', 'application/json')
+        .set('Authorization', token)
+        .send({
+          "coins": "5,14,10,20,50"
+        })
+        .expect((res: request.Response) => {
+          expect(res.body.data.errors.length === 1)
+          expect(res.body.data.errors[0].msg === 'Deposit amount must be one of the allowed values')
+        })
+        .expect(HTTP.BAD_REQUEST);
+    });
+  })
+
+
+  describe('deposit', () => {
+    beforeEach(async () => {
+      await request(app)
+      .post('/api/v1/vending/reset')
       .set('Accept', 'application/json')
-      .auth(token, { type: "bearer" })
-      .expect((res: request.Response) => {
-        expect(res.body.id === user.id);
+      .set('Authorization', token)
+      .expect(HTTP.OK);
+
+      await request(app)
+      .post('/api/v1/vending/deposit')
+      .set('Accept', 'application/json')
+      .set('Authorization', token)
+      .send({
+        "coins": "5,20,10,20,50"
       })
       .expect(HTTP.OK);
-  });
+    })
 
-  it('can create user', async () => {
-    await request(app)
-    .put('/api/v1/users/' + user.id)
-    .set('Accept', 'application/json')
-    .auth(token, { type: "bearer" })
-    .send({
-      name: 'Testing'
-    })
-    .expect((res: request.Response) => {
-      expect(res.body.name === 'Testing');
-    })
-    .expect(HTTP.OK);
-  });
+    it('can buy', async () => {
+      const expectedChange = [ 50, 5 ]
+      await request(app)
+        .post('/api/v1/vending/buy')
+        .set('Accept', 'application/json')
+        .set('Authorization', token)
+        .send({
+          "productId": prodId,
+          "count": 2
+        })
+        .expect((res: request.Response) => {
+          expect(res.body.change.join(',') === expectedChange.join(','))
+          expect(res.body.balance === 0)
+        })
+        .expect(HTTP.OK);
+    });
+  })
+
 });

@@ -50,7 +50,7 @@ describe('status integration tests', () => {
     await request(app)
     .delete('/api/v1/users/' + user.id)
     .set('Accept', 'application/json')
-    .auth(token, { type: "bearer" })
+    .set('Authorization', token)
     .expect((res: request.Response) => {
       expect(res.body.message === 'User successfully deleted')
     })
@@ -62,7 +62,7 @@ describe('status integration tests', () => {
     await request(app)
       .get('/api/v1/users')
       .set('Accept', 'application/json')
-      .auth(token, { type: "bearer" })
+      .set('Authorization', token)
       .expect(HTTP.OK)
       .expect((res: request.Response) => {
         expect(res.body.count > 0);
@@ -74,18 +74,18 @@ describe('status integration tests', () => {
     await request(app)
       .get('/api/v1/users/' + user.id)
       .set('Accept', 'application/json')
-      .auth(token, { type: "bearer" })
+      .set('Authorization', token)
       .expect((res: request.Response) => {
         expect(res.body.id === user.id);
       })
       .expect(HTTP.OK);
   });
 
-  it('can create user', async () => {
+  it('can edit user', async () => {
     await request(app)
     .put('/api/v1/users/' + user.id)
     .set('Accept', 'application/json')
-    .auth(token, { type: "bearer" })
+    .set('Authorization', token)
     .send({
       name: 'Testing'
     })

@@ -26,11 +26,10 @@ export class IndexRoute {
   }
 
   public initRoutes(): void {
-    // this.initApi();
     this.router.use('/auth', AuthRouter);
-    this.router.use('/api/v1/users', UserRouter);
-    this.router.use('/api/v1/products', ProdRouter);
-    this.router.use('/api/v1/vendings', VendRouter);
+    this.router.use('/api/v1/users', auth.verifyAuth, UserRouter);
+    this.router.use('/api/v1/products', auth.verifyAuth, ProdRouter);
+    this.router.use('/api/v1/vending', auth.verifyAuth, VendRouter);
     this.router.all('/', (req, res): any => res.send(`${name} ${version}`));
   }
 

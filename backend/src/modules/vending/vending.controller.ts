@@ -79,6 +79,24 @@ export class VendingController extends CrudController {
     });
   };
 
+  public reset = async (
+    req: Request,
+    res: Response
+  ): Promise<Response> => {
+    try {
+      const authUser = res.locals.authUser;
+
+      if (!authUser) return this.returnBadRequest(res, errorMessages.invalidUser);
+
+      await User.update({deposit: 0}, {where: {id: authUser.id}});
+      return this.returnData(res, {
+        auth_user: await User.scope('getUsers').findOne({ where: { id: authUser.id }})
+      });
+    } catch (err) {
+      return this.returnServerError(res, errorMessages.serverError);
+    }
+  };
+
   private calculateChange = (amount): number[] => {
     let remainingAmount = amount;
     const result = [];

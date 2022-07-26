@@ -13,7 +13,7 @@ export class UserController extends CrudController {
     res: Response
   ): Promise<Response> => {
     try {
-      const { name, password } = req.body;
+      const { name } = req.body;
       const {id} = req.params
 
       const user = await User.scope('withPassword').findOne({
@@ -21,7 +21,7 @@ export class UserController extends CrudController {
       });
       if (!user) return this.returnBadRequest(res, errorMessages.invalidUser);
 
-      await User.update({ name, password }, {where: {id: user.id}});
+      await User.update({ name }, {where: {id: user.id}});
       return this.returnData(res, {
         auth_user: await User.scope('getUsers').findOne({ where: { id: user.id }})
       });

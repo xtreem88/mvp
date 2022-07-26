@@ -18,7 +18,7 @@ export class VendingRoute extends CrudRoute {
   public init(): void {
     /**
      * This function comment is parsed by doctrine
-     * @route Get /vendings/meta
+     * @route Get /vending/meta
      * @group Vending
      * @produces application/json
      * @returns {object} 200
@@ -33,7 +33,7 @@ export class VendingRoute extends CrudRoute {
     */
     /**
      * This function comment is parsed by doctrine
-     * @route POST /vendings/deposit
+     * @route POST /vending/deposit
      * @group Vending
      * @produces application/json
      * @param {Deposit.model} deposit.body.required
@@ -51,7 +51,7 @@ export class VendingRoute extends CrudRoute {
     */
     /**
      * This function comment is parsed by doctrine
-     * @route POST /vendings/buy
+     * @route POST /vending/buy
      * @group Vending
      * @produces application/json
      * @param {Buy.model} product.body.required
@@ -63,14 +63,14 @@ export class VendingRoute extends CrudRoute {
 
     /**
      * This function comment is parsed by doctrine
-     * @route POST /vendings/reset
+     * @route POST /vending/reset
      * @group Vending
      * @produces application/json
      * @returns {object} 200 - Vending
      * @returns {Error}  default - Unexpected error
      * @security JWT
     */
-      this.router.post('/reset', auth.verifyBuyerRole, controller.store);
+      this.router.post('/reset', auth.verifyBuyerRole, controller.reset);
     }
 }
 

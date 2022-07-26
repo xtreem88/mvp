@@ -20,5 +20,4 @@ describe('Database', () => {
     expect(exp).toBeInstanceOf(Sequelize);
     await new Promise((r) => setTimeout(r, 2000));
   });
-
 });
