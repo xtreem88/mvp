@@ -4,7 +4,11 @@ import { CrudService } from '../../common/services/crud';
 class ProductService extends CrudService {
   public model = Product;
   public modelName = 'Product';
-  public filters = [];
+
+  public constructor() {
+    super();
+    this.filters = [];
+  }
 }
 
 export default new ProductService();

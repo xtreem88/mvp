@@ -13,6 +13,7 @@
     "crypto-js": "^3.1.9-1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "express-list-endpoints": "^6.0.0",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.0",
     "morgan": "^1.9.1",
@@ -23,15 +24,20 @@
     "sequelize-auto-migrations": "^1.0.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.3.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.26",
     "@types/cors": "^2.8.4",
     "@types/crypto-js": "^3.1.43",
     "@types/express": "^4.16.1",
+    "@types/express-list-endpoints": "^6.0.0",
+    "@types/jest": "^28.1.6",
     "@types/jsonwebtoken": "^7.2.8",
+    "@types/mocha": "^9.1.1",
     "@types/morgan": "^1.7.35",
     "@types/node": "^8.10.43",
     "@types/pluralize": "0.0.29",
+    "@types/supertest": "^2.0.12",
     "@types/validator": "^10.11.0",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
@@ -42,18 +48,23 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.1.1",
     "express-swagger-ui-generator": "^1.1.19",
+    "jest": "^28.1.3",
     "prettier": "^1.16.4",
-    "sucrase": "^3.10.0",
-    "typescript": "^3.3.3333"
+    "sucrase": "^3.24.0",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.7",
+    "typescript": "^4.7.4"
   },
   "scripts": {
-    "dev": "pm2 start ./node_modules/sucrase/bin/sucrase-node --name mvp-crud-api -- ./src/server.ts --watch --color=true && pm2 log",
+    "dev": "pm2 start ./node_modules/sucrase/bin/sucrase-node --name mvp-crud-api-backend -- ./src/server.ts --watch --color=true && pm2 log",
     "prebuild:dev": "rm -rf build",
     "build:dev": "tsc",
     "postbuild:dev": "pm2 start ecosystem.config.json && pm2 log",
     "prebuild": "sudo  rm -rf build",
     "build": "sudo tsc",
     "postbuild": "sudo pm2 start ecosystem.config.json && sudo pm2 log",
-    "stop": "pm2 delete all"
+    "stop": "pm2 delete all",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch --detectOpenHandles"
   }
 }

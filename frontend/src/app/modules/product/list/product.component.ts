@@ -5,13 +5,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { EntityCollectionService, EntityCollectionServiceFactory } from '@ngrx/data';
 import { EntityMap } from '../../../store/entity/entity-metadata';
-import { Product, PRODUCT_EMAIL_FIELD } from '../../../interfaces/product/product.interface';
+import { Product } from '../../../interfaces/product/product.interface';
 import { Observable, Subscription } from 'rxjs';
-import * as moment from 'moment';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../interfaces/state/app-state.interface';
 import { ProductPagination } from '../../../interfaces/product/product-pagination.interface';
 import { selectProductPaginationStateData } from '../store/product-pagination/paginations.selectors';
+import { authenticationFeatureKey } from '../../../store/auth/auth.state';
+import LoggedInUser from '../../../interfaces/auth/loggedin-user.interface';
 
 interface ProductData {
   id: number;
@@ -35,11 +36,13 @@ export class ProductComponent implements OnInit, OnDestroy {
   loaded$: Observable<boolean>;
   pageData$: Observable<ProductPagination>;
   pageData: ProductPagination;
+  userId: number;
 
   constructor(
     private productEffects: ProductEffects,
     private entityCollectionServiceFactory: EntityCollectionServiceFactory,
     private store: Store<AppState>,
+    private authStore: Store<{ authenticatedUser: LoggedInUser }>,
   ) {
     this.productState = this.entityCollectionServiceFactory.create<Product>(EntityMap.Product);
     this.products$ = this.productState.entities$;
@@ -50,6 +53,9 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource(products);
     }));
 
+    this.authStore.pipe(select(authenticationFeatureKey)).subscribe(user => {
+      this.userId = user?.uuid;
+    });
   }
 
   ngOnInit(): void {

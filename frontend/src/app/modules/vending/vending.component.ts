@@ -47,10 +47,11 @@ export class VendingComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // Add our fruit
     if (value) {
       this.coins.push(Number(value));
     }
+
+    event.input!.value = '';
     this.amountsCtrl.setValue(value);
   }
 
@@ -70,7 +71,7 @@ export class VendingComponent implements OnInit {
 
   deposit() {
     this.store.dispatch(vendingDepositEvent({
-      coins: this.coins
+      coins: [...this.coins]
     }));
   }
 }

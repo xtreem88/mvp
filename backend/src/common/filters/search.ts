@@ -23,7 +23,7 @@ class SearchFilter extends Filter {
 
       where = {
         ...where,
-        [Op.and]: [...[Op.and], ...[{ [Op.or]: fields }]]
+        [Op.and]: [...[Op.and] as any, ...[{ [Op.or]: fields }]]
       };
     }
 

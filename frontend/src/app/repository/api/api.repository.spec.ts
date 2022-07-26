@@ -40,7 +40,7 @@ describe('ApiService', () => {
       service.callHttpGet({path: '/test'}).subscribe((data) => {
         expect(data).toBe(responseMock)
       });
-      const req = httpMock.expectOne(`http://localhost:3000/test`);
+      const req = httpMock.expectOne(`http://localhost:3000/api/test`);
       req.flush(responseMock);
     });
 
@@ -48,17 +48,17 @@ describe('ApiService', () => {
       service.callHttpGet({path: '/test', param: metaMock}).subscribe((data) => {
         expect(data).toBe(responseMock)
       });
-      const req = httpMock.expectOne(`http://localhost:3000/test?page=1&per_page=25&total=10000&`);
+      const req = httpMock.expectOne(`http://localhost:3000/api/test?page=1&per_page=25&total=10000&`);
       req.flush(responseMock);
     });
   });
 
   describe('callHttpPut', () => {
     it('should make necessary function calls', () => {
-      service.callHttpPatch({path: '/test', param: productMock}).subscribe((data) => {
+      service.callHttpPut({path: '/test', param: productMock}).subscribe((data) => {
         expect(data).toBe(responseMock)
       });
-      const req = httpMock.expectOne(`http://localhost:3000/test`);
+      const req = httpMock.expectOne(`http://localhost:3000/api/test`);
       req.flush(responseMock);
     });
   });

@@ -9,7 +9,7 @@ export interface ApiClient {
 
   callHttpPost(payload: RequestPayload): Observable<any>;
 
-  callHttpPatch(payload: RequestPayload): Observable<any>;
+  callHttpPut(payload: RequestPayload): Observable<any>;
 
   callHttpDelete(payload: RequestPayload): Observable<any>;
 }

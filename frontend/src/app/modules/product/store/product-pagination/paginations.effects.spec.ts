@@ -1,8 +1,5 @@
-import * as assert from 'assert';
 import { Store, StoreModule } from '@ngrx/store';
-import { Actions, EffectsModule, getEffectsMetadata } from '@ngrx/effects';
-import { of, throwError } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
+import { EffectsModule } from '@ngrx/effects';
 import { ProductPaginationEffects } from './paginations.effects';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';

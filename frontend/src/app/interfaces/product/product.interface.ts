@@ -1,5 +1,3 @@
-import { ProductPagination } from './product-pagination.interface';
-
 export interface Product {
   dateLoaded?: Date;
   sellerId:	number;
@@ -11,15 +9,16 @@ export interface Product {
 
 export interface ProductsApiResponse {
   rows: Product[];
-  meta: ProductPagination;
+  count: number;
+  current_page: number;
+  items_per_page: number;
+  total_pages: number;
 }
 
 export interface ProductApiResponse {
-  product: Product;
-}
-
-export interface ProductApiPayload {
-  product: Partial<Product>;
+  data: Product;
+  error: boolean;
+  message: string;
 }
 
 export const PRODUCT_EMAIL_FIELD = 'email';

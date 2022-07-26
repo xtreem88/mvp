@@ -56,8 +56,6 @@ export class VendingController extends CrudController {
 
       let change = user.deposit - total;
 
-
-
       await User.update({deposit: 0}, {where: {id: authUser.id}});
       await Product.update({amountAvailable: (product.amountAvailable - count)}, {where: {id: productId}});
       await t.commit();
@@ -86,9 +84,12 @@ export class VendingController extends CrudController {
     const result = [];
     const changes = config.development.allowedAmounts.sort((a, b) => (b - a))
     for (const change of changes) {
-      const amt = Math.floor(remainingAmount / change) * change;
-      if(amt) {
-        result.push(amt);
+      const count = Math.floor(remainingAmount / change);
+      if(count) {
+        for (let index = 0; index < count; index++) {
+          result.push(change);
+        }
+
       }
 
       remainingAmount %= change;

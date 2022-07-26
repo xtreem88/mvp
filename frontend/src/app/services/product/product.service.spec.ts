@@ -34,7 +34,7 @@ describe('ProductService', () => {
       spyOn(mockAPiService, 'callHttpGet').and.returnValue(of());
       service.getProducts();
       expect(mockAPiService.callHttpGet).toHaveBeenCalledWith({
-        path: '/products', version: '', param: undefined, type: '' });
+        path: '/products', version: '/v1', param: undefined, type: '' });
     });
 
     it('should call callHttpGet when called with paging datat', () => {
@@ -47,7 +47,7 @@ describe('ProductService', () => {
       spyOn(mockAPiService, 'callHttpGet').and.returnValue(of());
       service.getProducts(metaMock);
       expect(mockAPiService.callHttpGet).toHaveBeenCalledWith({
-        path: '/products', version: '', param: metaMock, type: '' });
+        path: '/products', version: '/v1', param: { limit: 25, page: 1 }, type: '' });
     });
   });
 
@@ -62,7 +62,7 @@ describe('ProductService', () => {
       spyOn(mockAPiService, 'callHttpGet').and.returnValue(of());
       service.getProduct(5);
       expect(mockAPiService.callHttpGet).toHaveBeenCalledWith({
-        path: '/products/5', version: '', type: '' });
+        path: '/products/5', version: '/v1', type: '' });
     });
   });
 

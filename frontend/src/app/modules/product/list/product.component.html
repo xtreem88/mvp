@@ -8,11 +8,16 @@
       <div class="table-loading-shade" *ngIf="(loading$ | async)">
         <mat-spinner *ngIf="(loading$ | async)"></mat-spinner>
       </div>
+      <div class="page-header">
+        <button mat-raised-button  style="margin-bottom: 15px;" color="primary" [routerLink]="['/product/add']">
+          <mat-icon>add</mat-icon> Add Product
+        </button>
+      </div>
 
       <div class="table-header">
         <mat-form-field appearance="standard">
           <mat-label>Filter</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Filter with email" #input />
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filter product name" #input />
         </mat-form-field>
       </div>
 
@@ -25,7 +30,7 @@
 
         <ng-container matColumnDef="productName">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Product Name</mat-header-cell>
-          <mat-cell *matCellDef="let row"><a mat-button [routerLink]="['/product', row.id]">{{ row.productName }}</a></mat-cell>
+          <mat-cell *matCellDef="let row"><a mat-button [routerLink]="['/product/view', row.id]">{{ row.productName }}</a></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="amountAvailable">
@@ -45,10 +50,10 @@
 
           <mat-cell *matCellDef="let row">
 
-            <button mat-icon-button color="primary" [routerLink]="['/product', row.id, 'edit-attributes']" [title]="'Edit product with ID:' + row.id">
+            <button mat-icon-button color="primary" *ngIf="row.sellerId === userId" [routerLink]="['/product', row.id, 'edit']" [title]="'Edit product with ID:' + row.id">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="deleteProduct(row.id)" [title]="'Delete product with ID:' + row.id">
+            <button mat-icon-button color="warn" *ngIf="row.sellerId === userId" (click)="deleteProduct(row.id)" [title]="'Delete product with ID:' + row.id">
               <mat-icon>delete</mat-icon>
             </button>
           </mat-cell>

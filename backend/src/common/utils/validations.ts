@@ -24,15 +24,7 @@ export const userValidations = {
     check('role').custom(value => ValidRoles[value]).withMessage(errorMessages.invalidRole).trim().escape(),
   ],
   userUpdate: [
-    check('name').trim().escape(),
-    check('password').custom((value,{req}) => {
-      if (value !== req.body.confirmPassword) {
-        return false;
-      } else {
-        return value;
-      }
-    }).withMessage(errorMessages.passwordsNotMatch)
-    .isLength({ min: 3 }).withMessage('Password Must Be at Least 3 Characters').trim().escape(),
+    check('name').notEmpty().withMessage(errorMessages.nameRequired).trim().escape(),
   ],
   newProduct: [
     check('productName').notEmpty().withMessage(errorMessages.productNameRequired).trim().escape(),

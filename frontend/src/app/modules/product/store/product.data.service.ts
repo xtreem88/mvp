@@ -46,28 +46,32 @@ export class ProductDataService extends DefaultDataService<Product> implements O
     }
     return this.productService.getProducts(paging)
       .pipe(
-        tap((response) => this.paginationEffects.setPagingData(response.meta)),
+        tap((response) => this.paginationEffects.setPagingData({
+          total: response.count,
+          page: response.current_page,
+          per_page: response.items_per_page
+        })),
         map((response) => response.rows));
   }
 
   getById(id: number): Observable<Product> {
     return this.productService.getProduct(id)
     .pipe(
-      map(cust => cust.product)
+      map(cust => cust.data)
     );
   }
 
   update(product: Update<Product>): Observable<Product> {
     return this.productService.updateProduct(
       product.changes.id,
-      {product: product.changes}).pipe(
-        map(cust => cust.product)
+      product.changes).pipe(
+        map(cust => cust.data)
       );
   }
 
   add(product: Product): Observable<Product> {
     return this.productService.createProduct(product).pipe(
-      map(cust => cust.product)
+      map(cust => cust.data)
     );
   }
 

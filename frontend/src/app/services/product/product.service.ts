@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Product, ProductApiPayload, ProductApiResponse, ProductsApiResponse } from '../../interfaces/product/product.interface';
+import { Product, ProductApiResponse, ProductsApiResponse } from '../../interfaces/product/product.interface';
 import { ApiService } from '../../repository/api/api.repository';
 import { ProductPagination } from '../../interfaces/product/product-pagination.interface';
 
@@ -13,10 +13,17 @@ export class ProductService {
   }
 
   getProducts(paging?: ProductPagination): Observable<ProductsApiResponse> {
+    let param: any
+    if (paging) {
+      param = {
+        limit: paging.per_page,
+        page: paging.page
+      }
+    }
     return this.apiClient.callHttpGet({
       path: `${this.apiPath}`,
       version: environment.apiVersion,
-      param: paging,
+      param: param,
       type: ''
     });
   }
@@ -38,8 +45,8 @@ export class ProductService {
     });
   }
 
-  updateProduct(id: number, product: Partial<ProductApiPayload>): Observable<ProductApiResponse> {
-    return this.apiClient.callHttpPatch({
+  updateProduct(id: number, product: Partial<Product>): Observable<ProductApiResponse> {
+    return this.apiClient.callHttpPut({
       path: `${this.apiPath}/${id}`,
       param: product,
       version: environment.apiVersion,

@@ -42,14 +42,14 @@ export class ApiService implements ApiClient {
       );
   }
 
-  callHttpPatch(payload: RequestPayload): Observable<any> {
+  callHttpPut(payload: RequestPayload): Observable<any> {
     const url = this.generateUrl(payload);
     const headers = payload.headers
       ? payload.headers
       : this.headerService.createHeaders();
 
     this.baseUrl = environment.apiBase;
-    return this.http.patch(url, payload.param, { headers: headers }).pipe(
+    return this.http.put(url, payload.param, { headers: headers }).pipe(
       map((response) => {
         return response;
       })

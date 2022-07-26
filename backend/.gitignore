@@ -11,3 +11,4 @@ yarn-error.log
 dist/
 src/database/migration-metadata.json
 src/database/seeder-metadata.json
+/coverage

@@ -6,8 +6,9 @@ import logger = require('morgan');
 
 import Database from './database';
 import { IndexRoute } from './routes';
-import expressSwagger from 'express-swagger-ui-generator';
+const expressSwagger = require('express-swagger-ui-generator');
 import bodyParser = require('body-parser')
+
 
 class App {
   public express: express.Application;

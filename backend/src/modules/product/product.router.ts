@@ -60,7 +60,7 @@ export class ProductRoute extends CrudRoute {
        * @returns {Error}  default - Unexpected error
        * @security JWT
       */
-       this.router.post('/', userValidations.newProduct, auth.verifySellerRole, validator.validate, controller.store);
+       this.router.post('/', userValidations.newProduct, auth.verifySellerRole, validator.validate, controller.create);
 
       /**
        * This function comment is parsed by doctrine

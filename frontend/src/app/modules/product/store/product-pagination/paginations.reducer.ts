@@ -4,6 +4,10 @@ import { ProductPaginationState } from './paginations.model';
 
 
 export const initialState: ProductPaginationState = {
+  data: {
+    per_page: 5,
+    page: 1
+  }
 };
 
 const reducer = createReducer(

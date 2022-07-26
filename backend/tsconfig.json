@@ -11,6 +11,7 @@
     "declaration": false,
     "allowJs": true,
     "strictPropertyInitialization": false,
+    "noImplicitReturns": false,
     "target": "es6",
     "lib": [
       "es2015",

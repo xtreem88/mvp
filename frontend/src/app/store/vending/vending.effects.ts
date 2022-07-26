@@ -8,6 +8,7 @@ import { vendingbuyEvent, vendingbuyFailureEvent, vendingbuySuccessEvent, vendin
   vendingDepositFailureEvent, vendingDepositSuccessEvent } from './vending.actions';
 import { refreshEvent } from '../auth/auth.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiError } from '../../interfaces/api/error.interface';
 
 @Injectable()
 export class VendingEffects {
@@ -28,8 +29,8 @@ export class VendingEffects {
         });
         return refreshEvent();
       }),
-      catchError((err: any) => {
-        console.log(err)
+      catchError((err: ApiError) => {
+        this.displayError(err);
         return of(vendingDepositFailureEvent())
       })))
   ))
@@ -38,12 +39,28 @@ export class VendingEffects {
     ofType(vendingbuyEvent),
     mergeMap((payload) => this.vendingService.buy(payload.productId, payload.count).pipe(
       map((response) => vendingbuySuccessEvent({response})),
-      map(() => {
-        this.snackBar.open("Purchase completed successfully", 'ok', {
+      map((response) => {
+        this.snackBar.open(`Purchase completed successfully. Your change is: ${response?.response?.change?.join(', ')}`, 'ok', {
           duration: 3000
         });
         return refreshEvent();
       }),
-      catchError((err) => of(vendingbuyFailureEvent(err)))))
+      catchError((err) => {
+        this.displayError(err);
+        return of(vendingbuyFailureEvent(err))
+      })))
   ))
+
+  private displayError(err: ApiError) {
+    if (err?.message) {
+      this.snackBar.open(err.message, 'ok', {
+        duration: 3000
+      });
+    }
+    err?.data?.errors.forEach(error => {
+      this.snackBar.open(error.msg, 'ok', {
+        duration: 3000
+      });
+    });
+  }
 }

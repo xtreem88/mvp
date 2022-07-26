@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { EntityCollectionServiceFactory } from '@ngrx/data';
 import { StoreModule } from '@ngrx/store';
 import { MockService } from 'ng-mocks';
@@ -35,6 +36,7 @@ describe('ProductFormsComponent', () => {
       ],
       imports: [
         ReactiveFormsModule,
+        RouterTestingModule,
         FormsModule,
         StoreModule.forRoot({}),]
 

@@ -46,7 +46,7 @@ describe('ProductComponent', () => {
 
   describe('paginate', () => {
     it('should use effects for pagination', () => {
-      spyOn(effectsMock, 'getProducts').and.returnValue(of());
+      spyOn(effectsMock, 'getProducts').and.returnValue();
       component.paginate({
         pageIndex: 1,
         pageSize: 20,
@@ -56,7 +56,7 @@ describe('ProductComponent', () => {
     });
 
     it('should use pass the correct pagination object', () => {
-      spyOn(effectsMock, 'getProducts').and.returnValue(of());
+      spyOn(effectsMock, 'getProducts').and.returnValue();
       component.paginate({
         pageIndex: 1,
         pageSize: 20,

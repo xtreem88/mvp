@@ -8,6 +8,9 @@ import { name, version } from '../package.json';
 
 import auth from './middlewares/auth';
 import AuthRouter from './modules/auth/auth.router';
+import UserRouter from './modules/user/user.router';
+import ProdRouter from './modules/product/product.router';
+import VendRouter from './modules/vending/vending.router';
 
 import { getDirectories } from './common/utils/functions';
 
@@ -23,8 +26,11 @@ export class IndexRoute {
   }
 
   public initRoutes(): void {
-    this.initApi();
+    // this.initApi();
     this.router.use('/auth', AuthRouter);
+    this.router.use('/api/v1/users', UserRouter);
+    this.router.use('/api/v1/products', ProdRouter);
+    this.router.use('/api/v1/vendings', VendRouter);
     this.router.all('/', (req, res): any => res.send(`${name} ${version}`));
   }
 
@@ -35,6 +41,7 @@ export class IndexRoute {
     modules.forEach(async module => {
       const dir = `${prefix}src/modules/${module}/${module}.router${ext}`;
       if (existsSync(resolve(dir))) {
+        console.log(dir)
         this.router.use(
           `/api/v1/${plural(module)}`,
           auth.verifyAuth,

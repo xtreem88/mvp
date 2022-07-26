@@ -10,7 +10,7 @@
         <mat-spinner *ngIf="(loading$ | async)"></mat-spinner>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="user?.role === 'buyer'">
         <mat-form-field fxFlex="25">
           <input matInput type="text" placeholder="Amount to buy" [(ngModel)]="amount">
         </mat-form-field>

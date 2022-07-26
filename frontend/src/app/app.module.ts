@@ -19,6 +19,7 @@ import { AppClientHttpInterceptor } from './modules/core/http.interceptor';
 import { ProductService } from './services/product/product.service';
 import { AppErrorInterceptor } from './modules/core/error.interceptor';
 import { UserService } from './services/user/user.service';
+import { RoleGuardService } from './modules/core/role.guard';
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import { UserService } from './services/user/user.service';
     LoginModule,
     MatButtonModule,
   ],
-  providers: [AppHttpHeaders, ApiService, ProductService, AuthGuardService, VendingService, UserService,
+  providers: [AppHttpHeaders, ApiService, ProductService, AuthGuardService, VendingService, UserService, RoleGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: AppClientHttpInterceptor, multi: true }, { provide: HTTP_INTERCEPTORS, useClass: AppErrorInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
