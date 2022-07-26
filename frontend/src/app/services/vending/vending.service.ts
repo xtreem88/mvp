@@ -8,7 +8,7 @@ import { BuyResponse } from '../../interfaces/vending/buy-response.interface';
 
 @Injectable()
 export class VendingService {
-  private apiPath = '/vendings';
+  private apiPath = '/vending';
   constructor(private apiClient: ApiService) {
   }
 
