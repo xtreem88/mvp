@@ -70,7 +70,6 @@ describe('status integration tests', () => {
       "productName": "Product1_test",
     })
     .then((res: request.Response) => {
-      console.log(res.body)
       prodId = res.body.data.id;
     });
   });
