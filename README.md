@@ -128,7 +128,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - More info about the middleware can be found [here](https://www.npmjs.com/package/express-swagger-ui-generator)
 - To start the API server, Follow the instructions above
 
-## Future work (Todo)
+## TODO
 - Use stateful api tokens for backend so that sessions can be destroyed and multiple sessions can be tracked
 - Better error handling for frontend and backend
 - Error logging for frontend and backend
