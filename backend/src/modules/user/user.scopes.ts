@@ -1,5 +1,5 @@
 export const defaultScope = {
-  attributes: ['id', 'name', 'username', 'role', 'deposit', 'created_at', 'updated_at', 'deleted_at']
+  attributes: ['id', 'name', 'username', 'role', 'deposit', 'created_at', 'updated_at']
 };
 
 export const scopes = {
